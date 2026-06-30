@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-bold mb-4">Bookings</h2>
+  <ul class="list-group">
+    {% for b in bookings %}<li class="list-group-item">{{ b.listing.title }} - {{ b.date }} ({{ b.get_status_display }})</li>{% empty %}<li class="list-group-item">No bookings.</li>{% endfor %}
+  </ul>
+</div>
+{% endblock %}

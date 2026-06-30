@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-bold mb-4">Provider Dashboard</h2>
+  <a href="{% url 'listing_create' %}" class="btn text-white mb-4" style="background:var(--indigo-600);">+ New Listing</a>
+  <h5 class="mb-3">Your Listings</h5>
+  <ul class="list-group mb-5">
+    {% for l in listings %}<li class="list-group-item">{{ l.title }} - {{ l.price_range }}</li>{% empty %}<li class="list-group-item">No listings yet.</li>{% endfor %}
+  </ul>
+  <h5 class="mb-3">Incoming Bookings</h5>
+  <ul class="list-group">
+    {% for b in bookings %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      {{ b.listing.title }} - {{ b.customer.username }} ({{ b.get_status_display }})
+      {% if b.status == 'pending' %}
+      <span>
+        <a href="{% url 'update_booking_status' b.pk 'confirmed' %}" class="btn btn-sm btn-success">Accept</a>
+        <a href="{% url 'update_booking_status' b.pk 'cancelled' %}" class="btn btn-sm btn-danger">Reject</a>
+      </span>
+      {% elif b.status == 'confirmed' %}
+      <a href="{% url 'update_booking_status' b.pk 'completed' %}" class="btn btn-sm btn-primary">Mark Completed</a>
+      {% endif %}
+    </li>
+    {% empty %}<li class="list-group-item">No bookings yet.</li>{% endfor %}
+  </ul>
+</div>
+{% endblock %}
